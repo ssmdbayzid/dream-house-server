@@ -5,16 +5,26 @@ const dotenv  = require("dotenv")
 dotenv.config()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const connectDatabase = require("./utility/connectData")
+const propertyRouter = require("./Routes/propertyRouter")
 
 
 app.use(express.json())
 app.use(cors({origin: "http://localhost:5173/", credentials: true}))
 app.use(bodyParser.json())
 
+// Connect  mongodb 
+connectDatabase().catch(err=> console.log(err.message))
+
+
+// Routes
+app.use("/api/v1/properties", propertyRouter)
 
 app.get("/", (req, res)=>{
     res.send("server running")
 })
+
+
 
 app.listen(5000, ()=>{
     console.log("server running with 5000")
