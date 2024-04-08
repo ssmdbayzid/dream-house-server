@@ -11,3 +11,17 @@ const connectDatabase = async()=>{
 }
 
 module.exports = connectDatabase;
+
+/*
+MONGO_URL = mongodb+srv://dream-house:yUApj5On7Zq9m3Yy@cluster0.yvfoqeg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+JWT_SECRET_KEY = c8a8437677fcfab679fsadas92c8470ffc34b932f5sdfaaa3296c09f65dsf2d2becfe1db8b2dsf
+
+CLIENT_ID = 882839476945-35bno5k6iilf0hr2mvmucdoro1fhf5bf.apps.googleusercontent.com
+
+ CLIENT_SECRET = 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
+ CALLBACK_URL = http://localhost:5000/api/v1/auth/google/callback
+ SUCCESS_URL = http://localhost:5173/login/success
+ FAILED_URL = http://localhost:5173/login/failed
+
+*/
