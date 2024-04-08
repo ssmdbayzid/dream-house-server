@@ -12,8 +12,8 @@ const authRouter = require("./Routes/authRouter")
 
 app.use(express.json())
 app.use(cors({
-    origin: "http://localhost:5173", 
-    // origin: "https://dream-house-server-7ss1.vercel.app", 
+    // origin: "http://localhost:5173", 
+    origin: "https://dream-house-server-7ss1.vercel.app", 
     credentials: true
 }))
 app.use(bodyParser.json())
