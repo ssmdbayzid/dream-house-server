@@ -33,3 +33,22 @@ exports.login = async (req, res) =>{
     }
 }
 
+exports.googleLogin = async (req, res) =>{
+    try {      
+        const user =  await User.findOne({email: req.body.email})
+        if(user){
+        const accessToken =  jwt.sign(user.email, process.env.JWT_SECRET_KEY);  
+        return res
+        .status(200).json({sucess: true, message: "Log In  success full", user: user, token:accessToken})
+        }else{
+            const newUser = await User.create(req.body);
+            const accessToken =  jwt.sign(user.email, process.env.JWT_SECRET_KEY);     
+            return res
+             .status(200).json({sucess: true, message: "Log In  success full", user: newUser, token:accessToken})           
+        }                      
+    } catch (error) {
+        return res
+        .status(500).json({sucess: false, message: error.message})  
+    }
+}
+

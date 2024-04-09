@@ -60,16 +60,3 @@ exports.postComment = async (req, res) =>{
       .status(500).json({success: true, message:error.message})
    }      
 }
-
-exports.bookingProperty = async(req, res) =>{
-   try {
-      const id = req.params.id;
-      console.log(req.body, id)
-
-      return res
-      .status(200).json({success: false, message: "Thanks for your booking", data: "result"})
-   } catch (error) {
-      return res
-      .status(500).json({success: true, message:error.message})
-   }   
-}
