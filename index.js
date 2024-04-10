@@ -8,6 +8,7 @@ const mongoose = require("mongoose")
 const connectDatabase = require("./utility/connectData")
 const propertyRouter = require("./Routes/propertyRouter")
 const authRouter = require("./Routes/authRouter")
+const Booking = require("./Schema/BookingSchema")
 
 
 app.use(express.json())
@@ -30,7 +31,10 @@ app.get("/", (req, res)=>{
     res.send("server running")
 })
 
-
+app.get("/booking", async (req, res)=>{
+    const result = await Booking.find()
+    return result
+})
 
 app.listen(5000, ()=>{
     console.log("server running with 5000")

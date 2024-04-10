@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Types.ObjectId,
+    },
     user: {
         type: mongoose.Types.ObjectId,
         ref: "User",
     },
-    properties: {
+    property: {
         type: mongoose.Types.ObjectId,
         ref: "Properties"
     },

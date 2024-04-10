@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const propertySchema = new mongoose.Schema({
+  
   title: { type: String, required: true },
   agent_name: { type: String, required: true },
   property_type: { type: String, required: true },

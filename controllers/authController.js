@@ -52,3 +52,15 @@ exports.googleLogin = async (req, res) =>{
     }
 }
 
+exports.getAllUser = async(req, res)=>{
+    try {
+        const users = await User.find()
+
+    return res
+    .status(200).json({sucess: true, message: "Log In  success full", data: users})   
+}
+     catch (error) {
+        return res
+        .status(500).json({sucess: false, message: error.message})  
+    }
+}
