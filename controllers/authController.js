@@ -20,8 +20,18 @@ exports.register = async(req, res) =>{
 
 exports.login = async (req, res) =>{
     try {
-        console.log(req.body);
+        
         const user =  await User.findOne({email: req.body.email})
+        
+        .populate({
+            path: 'booking',
+            populate: {
+                path: 'property',
+                model: 'Properties'
+            }
+        })
+        .populate('my_properties');
+        
         if(!user) return res.status(403).json({success: false, message: "Don't have account, please join"})
 
        const accessToken =  jwt.sign(user.email, process.env.JWT_SECRET_KEY);                
@@ -36,6 +46,13 @@ exports.login = async (req, res) =>{
 exports.googleLogin = async (req, res) =>{
     try {      
         const user =  await User.findOne({email: req.body.email})
+        .populate({
+            path: 'booking',           
+            populate: {
+                path: 'property',
+                model: 'Properties'
+            }
+        });
         if(user){
         const accessToken =  jwt.sign(user.email, process.env.JWT_SECRET_KEY);  
         return res
@@ -52,9 +69,31 @@ exports.googleLogin = async (req, res) =>{
     }
 }
 
+exports.getSingleUser = async(req, res)=>{
+    try {
+        const id = req.params.id;
+        const user =  await User.findById(id)
+        .populate({
+            path: 'booking',
+            populate: {
+                path: 'property',
+                model: 'Properties'
+            }
+        })
+        .populate('my_properties');
+        return res
+        .status(200).json({sucess: true, message: "Log In  success full", data: user})   
+    } catch (error) {
+        return res
+        .status(500).json({sucess: false, message: error.message})  
+    }
+ 
+
+}
+
 exports.getAllUser = async(req, res)=>{
     try {
-        const users = await User.find()
+        const users = await User.find()     
 
     return res
     .status(200).json({sucess: true, message: "Log In  success full", data: users})   

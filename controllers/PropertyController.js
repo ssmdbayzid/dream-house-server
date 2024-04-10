@@ -1,5 +1,7 @@
-const Booking = require("../Schema/BookingSchema");
-const Property = require("../Schema/PropertySchema")
+
+const BookProperty = require("../Schema/PropertyBooking");
+const Property = require("../Schema/PropertySchema");
+const User = require("../Schema/UserSchema");
 
 
 //------ Get Properties --------
@@ -34,8 +36,18 @@ exports.getSingleProperty = async(req, res) =>{
 exports.addProperty = async(req, res)=>{
    try {
       console.log(req.body , "add product")
+      const {userId, ...rest} = req.body;
+
+         const result = await Property.create(rest)
+      const updateUser = await User.updateOne({_id: userId}, {
+         $push: {
+            my_properties: result._id,
+         }
+        })
+  
+        console.log(updateUser)
       return res
-      .status(200).json({success: true, message: "Add property success", data: "result"})
+      .status(200).json({success: true, message: "Add property success", data: result})
    } catch (error) {
       return res
       .status(500).json({success: false, message: error.message})
@@ -66,24 +78,23 @@ exports.postComment = async (req, res) =>{
  exports.bookingProperty = async(req, res) =>{
    try {
       const id = req.params.id;
-      console.log("this is from booking")
       const newBooking = {
-         user: req.body.userId,
+         user: req?.body.userId,
          property: id,
-         phone: req.body.phone,
-         date: req.body.date,
+         phone: req?.body.phone,
+         date: req?.body.date,
         }
 
-      const existingBooking = await Booking.findOne({user:req.body.userId, property: id})
+      const existingBooking = await BookProperty.findOne({user:req.body.userId, property: id})
      
       if(existingBooking){
          return res.status(400).json({ success: false, message: "You have already booked this property." });
       }
      
+      console.log("this is from booking")
 
-      const result =  new Booking(newBooking)
-        await result.save()
-
+      const result =  await BookProperty.create(newBooking)
+        
       const updateUser = await User.updateOne({_id: req.body.userId}, {
        $push: {
            booking: result._id,
@@ -92,7 +103,7 @@ exports.postComment = async (req, res) =>{
 
       console.log(updateUser)
       return res
-      .status(200).json({success: false, message: "Thanks for your booking", data: "result"})
+      .status(200).json({success: false, message: "Thanks for your booking", data: result})
    } catch (error) {
       console.log(error.message)
       return res      
@@ -104,7 +115,7 @@ exports.postComment = async (req, res) =>{
 exports.getAllBookedProperties = async(req, res)=>{
    try {
       console.log("clickd  on booked")
-      const result = await Booking.find();
+      const result = await BookProperty.find();
       console.log(result)
       return res
       .status(200).json({success: false, message: "Thanks for your booking", data: result})
